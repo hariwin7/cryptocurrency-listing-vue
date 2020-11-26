@@ -1,7 +1,28 @@
 <template>
   <div class="coins">
     <h2>Cryptocurrency Prices</h2>
-    <div class="table-contents">
+    <div class="paginate">
+      <select v-model="page">
+        <option value="10">10 rows</option>
+        <option value="25">25 rows</option>
+        <option value="50">50 rows</option>
+        <option value="100">100 rows</option>
+      </select>
+      <paginate
+        :page-count="Math.floor(stats.total / page)"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Prev'"
+        :next-text="'Next'"
+        :container-class="'pagination'"
+        :page-class="'page-item'"
+        :next-class="'next-item'"
+        :prev-class="'prev-item'"
+      >
+      </paginate>
+    </div>
+    <div class="table-contents" v-if="!loader">
       <table>
         <tbody>
           <tr v-for="coin in allCoins" v-bind:key="coin.id">
@@ -16,91 +37,53 @@
         </tbody>
       </table>
     </div>
+    <div v-if="loader" class="loader">Refreshing Data...</div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Paginate from "vuejs-paginate";
+import "../css/Coins.css";
 
 export default {
   name: "Coins",
+  components: {
+    Paginate,
+  },
   data() {
     return {
       polling: null,
+      page: 10,
+      offset: 0,
+      initial: true,
     };
   },
-
+  watch: {
+    page: function (value) {
+      this.getCoinData({ limit: value, offset: this.offset });
+    },
+  },
   methods: {
     ...mapActions(["getCoinData"]),
+    clickCallback: function (pageNumber) {
+      this.offset = pageNumber * this.page;
+      this.getCoinData({ limit: this.page, offset: pageNumber * this.page });
+    },
   },
-  computed: mapGetters(["allCoins", "base"]),
+  computed: mapGetters(["allCoins", "base", "stats", "loader"]),
   created() {
+    if (this.initial) {
+      this.getCoinData({ limit: this.page, offset: this.offset });
+
+      this.initial = false;
+    }
     this.polling = setInterval(() => {
-      this.getCoinData({ limit: 10, offset: 0 });
-    }, 10000);
+      this.getCoinData({ limit: this.page, offset: this.offset });
+    }, 3000);
   },
   beforeDestroy() {
     clearInterval(this.polling);
   },
 };
 </script>
-
-<style>
-.coins {
-  display: flex;
-  flex-direction: column;
-}
-.coins h2 {
-  text-align: center;
-}
-
-.table-contents {
-  display: flex;
-  justify-content: center;
-}
-.table-contents table {
-  font-size: 20px;
-  width: 50%;
-}
-.table-contents img {
-  width: 50px;
-  padding: 1rem;
-}
-
-.red {
-  color: red;
-}
-.green {
-  color: rgba(137, 214, 20, 0.801);
-}
-
-@media only screen and (max-width: 760px),
-  (min-device-width: 768px) and (max-device-width: 1024px) {
-  /* Force table to not be like tables anymore */
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-    font-size: 20px;
-  }
-
-  td {
-    border: none;
-    border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
-  }
-
-  td:before {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-  }
-}
-</style>

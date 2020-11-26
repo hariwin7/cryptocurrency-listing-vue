@@ -1,0 +1,140 @@
+.coins {
+  display: flex;
+  flex-direction: column;
+}
+.coins h2 {
+  text-align: center;
+}
+
+.table-contents {
+  display: flex;
+  justify-content: center;
+}
+.table-contents table {
+  font-size: 20px;
+  width: 50%;
+}
+.table-contents img {
+  width: 50px;
+  padding: 1rem;
+}
+
+.red {
+  color: red;
+}
+.green {
+  color: rgba(137, 214, 20, 0.801);
+}
+.paginate {
+  display: flex;
+  justify-content: center;
+}
+.paginate select {
+  background-color: white;
+  width: 6rem;
+  height: 3.3rem;
+  border: 1px solid #eee;
+  padding: 2px;
+  margin-top: 1rem;
+  font-size: medium;
+  padding-left: 10px;
+}
+.paginate select:focus {
+  border-color: #7dbef1;
+  box-shadow: 0 0 5px #7dbef1;
+  outline: none;
+}
+.pagination {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+.page-item {
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 1rem;
+}
+
+.next-item {
+  border: 1px solid #eee;
+  padding: 1rem;
+}
+.prev-item {
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 1rem;
+}
+.page-item.active {
+  border-radius: 0px;
+  position: static !important;
+  background-color: #3f81c7;
+  color: white;
+}
+.loader {
+  text-align: center;
+  font-size: 20px;
+}
+@media only screen and (max-width: 760px),
+  (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Force table to not be like tables anymore */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+    font-size: 20px;
+  }
+
+  td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+  .paginate {
+    flex-direction: column;
+    width: 100%;
+  }
+  .paginate select {
+    align-self: center;
+    width: 6rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .pagination {
+    align-self: center;
+    flex-direction: column;
+    padding-inline-start: 0;
+  }
+  .page-item {
+    border-left: 1px solid #eee;
+    border-top: none;
+    border-right: 1px solid #eee;
+    width: 40%;
+  }
+  .next-item {
+    border-top: none;
+    width: 40%;
+  }
+  .prev-item {
+    border-left: 1px solid #eee;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
+    width: 40%;
+  }
+}
