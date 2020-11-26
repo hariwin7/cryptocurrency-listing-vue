@@ -80,7 +80,7 @@ export default {
     }
     this.polling = setInterval(() => {
       this.getCoinData({ limit: this.page, offset: this.offset });
-    }, 3000);
+    }, 15000);
   },
   beforeDestroy() {
     clearInterval(this.polling);
