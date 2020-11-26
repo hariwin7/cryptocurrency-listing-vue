@@ -15,7 +15,7 @@ export default {
   },
   computed: mapGetters(["allCoins"]),
   created() {
-    this.getCoinData();
+    this.getCoinData({ limit: 10, offset: 15 });
   },
 };
 </script>

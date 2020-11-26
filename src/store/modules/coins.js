@@ -7,9 +7,9 @@ const getters = {
   allCoins: (state) => state.coins,
 };
 const actions = {
-  async getCoinData({ commit }) {
+  async getCoinData({ commit }, param) {
     const response = await axios.get(
-      "https://api.coinranking.com/v1/public/coins/?limit=100"
+      `https://api.coinranking.com/v1/public/coins/?limit=${param.limit}&offset=${param.offset}`
     );
     commit("setCoins", response.data.data.coins);
   },
